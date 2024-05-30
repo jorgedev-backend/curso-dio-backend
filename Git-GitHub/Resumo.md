@@ -76,4 +76,42 @@ Painel de Controle > Contas de Usuário > Gerenciador de Credenciais > Credencia
 
 Todos os comandos que aqui agora serão demonstrados sobre a geração e gerenciamento de chaves SSH, também já foram explicados na documentação informada anteriormente, aqui apenas demonstrarei a maneira a qual entendi as suas utlizações, por tanto, serve como complemento caso não tenha entendido pela própria documentação.
 
-Antes de explicar os comandos, faço uma breve explicação de como funciona chaves SSH. Principio básico de criptografia assimétrica onde se utiliza um par de chaves distintas: uma chave pública e uma chave privada. A chave pública é usada para criptografar dados, enquanto a chave privada é usada para descriptografar. Isso permite comunicações seguras sem que as partes precisem compartilhar suas chaves secretas. Para mais informações sobre criptografia MATA, Lucas fez um ótimo artigo de introdução sobre o tema: [Criptografia: entendendo as diferenças entre simétrica, assimétrica e homomórfica.](https://www.alura.com.br/artigos/criptografia-diferencas-simetrica-assimetrica-homomorfica)
+Antes de explicar os comandos, faço uma breve explicação de como funciona chaves SSH. Principio básico de criptografia assimétrica onde se utiliza um par de chaves distintas: uma chave pública e uma chave privada. A chave pública é usada para criptografar dados, enquanto a chave privada é usada para descriptografar. Isso permite comunicações seguras sem que as partes precisem compartilhar suas chaves secretas. Para mais informações sobre criptografia: MATA, Lucas fez um ótimo artigo de introdução sobre o tema: [Criptografia: entendendo as diferenças entre simétrica, assimétrica e homomórfica.](https://www.alura.com.br/artigos/criptografia-diferencas-simetrica-assimetrica-homomorfica)
+
+Antes de começarmos a gerar as chaves, vamos verificar se já existem chaves presentes no usuário. 
+
+Abra o Git Bash:
+
+*Prefira abrir diretamente pelo S.O. e não por uma pasta, isso irá garantir que ele seja aberto diretamente na pasta home do usuário.*
+```
+ls -a ~/.ssh
+```
+Esse comando vai permitir que verifiquemos na pasta home do usuário se há arquivos de chaves mesmo que estejam ocultos. Caso existam, alguns dos seguintes arquivos irão ser retornandos ao usuário:
+
+- id_rsa.pub
+- id_ecdsa.pub
+- id_ed25519.pub
+
+Considerando que você não recebeu nenhum retorno, a próxima etapa seria:
+```
+ssh-keygen -t ed25519 -C "email@usuario.com"
+```
+Esse comando vai permitir gerar um conjunto de chave SSH, e também vai ser possivel especificar qual o algoritmo usado para isso, nesse caso foi passado o parâmetro **-t** que permite especificar. Também foi passado o parâmetro **-C** que utilizado para adicionar um comentário, que nesse caso foi usado para identificar o proprietário da chave.
+
+Ao executar o comando irão ser solicitados algumas informações, elas são: O local para armazenamento das chaves (como convenção as chaves ficam na pasta home do usuário); Passphrase que seria algo semelhante a uma senha.
+
+```
+eval "$(ssh-agent -s)"
+```
+Usado para inciar o ssh-agent, que é um gerenciador de chaves privadas SSH que facilita o processo de autenticação sem a necessidade de digitar a senha da chave privada repetidamente.
+
+```
+ssh-add ~/.ssh/id_ed25519
+```
+Esse comando vai permitir que adicionemos a chave que foi gerada anteriomente ao **ssh-agent** para isso é necessário informar o endereço da chave, então caso não tenha deixado no diretorio padrão, basta informa o endereço correto. Lembrando que agora também será solicitado o passphrase que você informou antes para as chaves. 
+
+Por fim, basta colocar a chave publica na sua conta do **GitHub** para isso acesse o arquivo da chave, então se tiver seguido todos os passos até aqui ela estará no seguinte endereço: **~/.ssh** e o nome do arquivo: **id_ed25519.pub**. Você pode utilizar o programa **Concatenate** via terminal pelo próprio git bash para acessar esse conteúdo, nesse caso basta usar o seguinte comando:
+```
+cat ~/.ssh/id_ed25519.pub
+```
+Copie todo o conteúdo e cole no **GitHub**. Caso não tenha achado, o caminho é o seguinte: Settings -> SSH and GPG keys -> New SSH key. Coloque o nome da chave mantenha a opção de **Authentication Key** e cole o conteúdo na opção de key.
