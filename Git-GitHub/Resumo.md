@@ -115,3 +115,64 @@ Por fim, basta colocar a chave publica na sua conta do **GitHub** para isso aces
 cat ~/.ssh/id_ed25519.pub
 ```
 Copie todo o conteúdo e cole no **GitHub**. Caso não tenha achado, o caminho é o seguinte: Settings -> SSH and GPG keys -> New SSH key. Coloque o nome da chave mantenha a opção de **Authentication Key** e cole o conteúdo na opção de key.
+
+## Comandos básicos de Versionamento
+
+### Criando e Clonando Repositórios
+
+```
+git init
+```
+Inicializa um repositório git na pasta atual.
+
+```
+git clone 'URL'
+```
+Clona repositório remoto **GitHub** usando a **URL**, ou seja, com o **HTTPS** ou **SSH**. (as aspas simples não são necessárias no comando, foram usadas apenas para indicar que a URL é algo mutável) Lembrando que para os repositórios privados vai ser necessário ter as credenciais de acesso respectiva. É possível também que no momento do comando seja alterado o nome da pasta que deseja colocar localmente no lugar do nome da pasta clone raiz, esse nome é colocado após um espaço depois da URL.
+```
+git remote add origin 'URL'
+```
+Define uma conexão entre um repositório local e um repositório remoto, o nome padrão para identificar essa conexão é **origin**.
+```
+git remote -v
+```
+Retorna os endereços de fetch e push de conexão do repositório atual.
+
+### Gerenciando Alterações no Repositório Local
+
+```
+git status
+```
+Retorna qual o estados do arquivos no diretorio que foi executado o comando, para esses estados há uma lista abaixo explicando cada um deles:
+
+#### Estados de Arquivos
+
+- **Untracked**
+(não é acompanhado pelo git)
+- **Tracked**
+(é acompanhado pelo git e possuirá "subestados")
+  - **Unmodified**
+  (não houve mudanças no arquivo desde da última versão)
+  - **Modified**
+  (houve mudanças no arquivo desde da última versão)
+  - **Staged**
+  (todas as mudanças foram registradas e o arquivo se encontra pronto para fazer commit)
+
+Todos os estados anteriores servem para gerenciar os arquivos na hora de realizar um commit e os colocar em posição de fazer parte ou não desse commit e ainda ajudar a ter uma visão do que foi alterado.
+
+```
+git add nome_arquivo/nome_pasta
+```
+Usado para adicionar arquivos e pastas **untracked** e **modified** para **staged**. É possível usar o parâmentro " . " para adicionar tudo que estão nos estado citados anteriormente, lembrando que isso é válido para o diretório que foi executado o comando.
+
+```
+git commit -m"descrição do commit"
+```
+Cria um commit com os arquivos adicionandos a **Stage-area**, ou seja, todos os arquivos listado com o estado **staged**. O parâmetro " **-m** " é usado para permitir que seja adicionado a descrição ao commit.
+
+```
+git log
+```
+Retorna o histórico de commit realizados com data e autor.
+
+Quando se trata do controle de arquivos para realização de commits dois arquivos são bastante utilizados, são eles: **.gitignore** usado para informar ao git quais arquivos e pastas devem ser ignorados quando for ser realizado uma verificação usando o *git status* e para realizar adição a lista de ignorados é necessario adicionar os endereços dentro do arquivo; O outro é **.gitkeep**, usado como convesão para a adição de pastas vazia no git, já que o git não rastreia pastas vazias, por tanto, cria-se esse arquivo dentro da pasta que deseja adicionar.
