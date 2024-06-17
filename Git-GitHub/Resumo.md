@@ -168,11 +168,97 @@ Usado para adicionar arquivos e pastas **untracked** e **modified** para **stage
 ```
 git commit -m"descrição do commit"
 ```
-Cria um commit com os arquivos adicionandos a **Stage-area**, ou seja, todos os arquivos listado com o estado **staged**. O parâmetro " **-m** " é usado para permitir que seja adicionado a descrição ao commit.
+Cria um commit com os arquivos adicionandos a **staging area**, ou seja, todos os arquivos listado com o estado **staged**. O parâmetro " **-m** " é usado para permitir que seja adicionado a descrição ao commit.
 
 ```
 git log
 ```
-Retorna o histórico de commit realizados com data e autor.
+Retorna o histórico de commit realizados com data e autor. Caso tenha problema para sair do comando é necessário aperta o botão **q** de *Quit*.
 
 Quando se trata do controle de arquivos para realização de commits dois arquivos são bastante utilizados, são eles: **.gitignore** usado para informar ao git quais arquivos e pastas devem ser ignorados quando for ser realizado uma verificação usando o *git status* e para realizar adição a lista de ignorados é necessario adicionar os endereços dentro do arquivo; O outro é **.gitkeep**, usado como convesão para a adição de pastas vazia no git, já que o git não rastreia pastas vazias, por tanto, cria-se esse arquivo dentro da pasta que deseja adicionar.
+
+### Desfazendo Alterações no Repositório Local
+
+```
+git restore nome_arquivo
+```
+Usado para restaurar o arquivo para o último estado salvo do arquivo. Todas as alterações que foram realizadas são descartadas.
+
+```
+git commit --amend -m"nova descrição"
+```
+Usado para corrigir a descrição do último commit realizado.
+
+```
+git reset hash_do_commit
+```
+Usado para desfazer a criação do(s) commit(s) posterior(es) ao commit informado e retornar os arquivos da *staging area* para os estados anteriores ainda mantendo as alterações. É possível também adicionar o parâmetro **--soft** que permite desfazer a criação do(s) commit(s) posterior(es) ao informado, entretanto, ainda mantendo as alterações prontas(o que nesse caso, mantem os arquivos e pastas na *staging area*). Ainda é possível usar o parâmetro **--hard** onde é desfeita a criação do(s) commit(s) posteior(es) ao informado e todas as alterações são descartadas (todos os arquivos e pasta *untracked* que foram adicionando são apagados).
+
+```
+git reflog
+```
+Retorna o histórico de criações e alterações de commit, ou seja, caso tenha usado o **git reset** vai constar essa alteração.
+
+```
+git restore --staged nome_do_arquivos
+```
+Usado para trazer o arquivo de staged para o estado anterior.
+
+### Enviando e Baixando Alterações com Repositório Remoto
+
+```
+git push origin main
+```
+Usado para enviar os commits locais para o repositório remoto, nesse caso os commints presentes na branch main serão enviados para o repositório indicado em origin. Lembrando que para realizar o envio é necessário usar o comando **git pull** antes, caso ocorra algum conflito será necessário resolver-los antes de realizar o **push**.
+
+```
+git pull
+```
+Atualiza o repositório local com o repositório remoto. Mesclando se necessário a(s) alterações existente no remoto com o local. 
+
+### Trabalhando com Branches
+
+```
+git checkout -b nome_branch
+```
+Cria uma nova branch apontando para o mesmo commit da branch atual e troca automáticamente para a nova branch.
+
+```
+git checkout nome_branch
+```
+Troca para a branch informada.
+
+```
+git branch -v
+```
+Retorna quais foram os últimos commits realizados pelas branchs existentes. 
+
+```
+git merge nome_branch
+```
+Mescla a branch main com a branch informada.
+
+```
+git branch
+```
+Retorna quais são as branchs existentes.
+
+```
+git branch -d nome_branch
+```
+Apaga a branch informada.
+
+```
+git fetch origin main
+```
+Copia as alterações do repositório remoto para o repositório local sem realizar o merge (diferente do que o **git pull** faz) para isso foi informado qual era a branch que gostariamos de baixar, foi escolhido a main como exemplo.
+
+```
+git diff main origin/main
+```
+Usado para realizar a comparação entre branchs e retornar para o usuário. Nesse caso, foi comparada a main (local) com origin/main(remota), note que foi necessário informa origin que é o repositório que queremos comparar e qual a branch em especifico.
+
+```
+git merge origin/main
+```
+Realiza a mesclagem da branch atual com a branch informada. Nesse caso foi mesclado com a branch main do repositório remoto.
