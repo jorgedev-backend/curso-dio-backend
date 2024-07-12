@@ -23,6 +23,11 @@ public class ContaTerminal {
         nomeCliente = scanner.nextLine();
 
         System.out.print("Por favor, para finalizar, digite o saldo da conta: ");
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Entrada inválida. Por favor, insira um número válido para o saldo.");
+            scanner.next();
+            System.out.print("Por favor, para finalizar, digite o saldo da conta: ");
+        }
         saldo = scanner.nextDouble();
 
         scanner.close();
